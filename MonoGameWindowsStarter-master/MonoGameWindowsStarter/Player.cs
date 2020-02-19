@@ -56,8 +56,8 @@ namespace MonoGameWindowsStarter
             font = content.Load<SpriteFont>("font");
 
             //set bounds size and placement
-            bounds.Width = 64;
-            bounds.Height = 64;
+            bounds.Width = 80;
+            bounds.Height = 100;
             bounds.X = 400;
             bounds.Y = 400;
             enemy.LoadContent(content);
@@ -72,6 +72,11 @@ namespace MonoGameWindowsStarter
             ballChoice = random.Next(1, 10);
             enemy.Update();
             enemy2.Update();
+            if (!playing)
+            {
+                enemy.isMoving = false;
+                enemy2.isMoving = false;
+            }
 
 
             if (playing)

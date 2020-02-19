@@ -18,12 +18,14 @@ namespace MonoGameWindowsStarter
         public BoundingRectangle position;
         public bool isVisible = true;
         public Texture2D texture;
+        public bool isMoving = true;
         public Rectangle RectBounds
         {
             get { return position; }
         }
         public void Update()
         {
+            if(isMoving)
             position.X += speed;
 
             if (position.X < 80)

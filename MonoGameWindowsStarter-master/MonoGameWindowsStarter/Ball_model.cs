@@ -16,8 +16,6 @@ namespace MonoGameWindowsStarter
         public int speed;
         public string color;
         public BoundingRectangle position;
-       // public Texture2D texture;
-      //  public ContentManager content;
         public bool isVisible = true;
         public Rectangle RectBounds
         {
