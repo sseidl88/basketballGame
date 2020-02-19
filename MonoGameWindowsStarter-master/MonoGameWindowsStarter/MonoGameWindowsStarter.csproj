@@ -47,6 +47,7 @@
     <Compile Include="EnemyModel.cs" />
     <Compile Include="EnemyType1.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Grid.cs" />
     <Compile Include="Hoop.cs" />
     <Compile Include="Moneyball.cs" />
     <Compile Include="Player.cs" />
