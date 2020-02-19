@@ -11,11 +11,21 @@ namespace MonoGameWindowsStarter
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        public Player player;
+        public Hoop hoop1;
+        public Hoop hoop2;
+        public Hoop hoop3;
+        public int score = 0;
+        
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+             player = new Player(this);
+            hoop1 = new Hoop(100, 70);
+            hoop2 = new Hoop(350, 40);
+            hoop3 = new Hoop(600, 70);
         }
 
         /// <summary>
@@ -39,7 +49,10 @@ namespace MonoGameWindowsStarter
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            player.LoadContent(Content);
+            hoop1.LoadContent(Content);
+            hoop2.LoadContent(Content);
+            hoop3.LoadContent(Content);
             // TODO: use this.Content to load your game content here
         }
 
@@ -64,6 +77,8 @@ namespace MonoGameWindowsStarter
 
             // TODO: Add your update logic here
 
+            player.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -76,6 +91,15 @@ namespace MonoGameWindowsStarter
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            player.Draw(spriteBatch);
+            hoop1.Draw(spriteBatch);
+            hoop2.Draw(spriteBatch);
+            hoop3.Draw(spriteBatch);
+
+            spriteBatch.End();
+
 
             base.Draw(gameTime);
         }

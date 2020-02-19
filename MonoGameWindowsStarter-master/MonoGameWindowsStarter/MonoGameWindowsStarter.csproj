@@ -41,7 +41,15 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Ball_model.cs" />
+    <Compile Include="Basketball.cs" />
+    <Compile Include="BoundingRectangle.cs" />
+    <Compile Include="EnemyModel.cs" />
+    <Compile Include="EnemyType1.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Hoop.cs" />
+    <Compile Include="Moneyball.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
