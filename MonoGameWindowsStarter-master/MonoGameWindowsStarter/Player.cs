@@ -184,6 +184,12 @@ namespace MonoGameWindowsStarter
             spriteBatch.Draw(texture, new Vector2(bounds.X, bounds.Y));
             spriteBatch.DrawString(font, "Score: " + score.ToString(), scoreboardPosition, Color.White);
             spriteBatch.DrawString(font, "Time Left: " + timer.ToString("0.0"), new Vector2(200, 20), Color.White);
+            if (!playing)
+            {
+                spriteBatch.DrawString(font, "GAME OVER", new Vector2(300, 200), Color.White);
+                spriteBatch.DrawString(font, "Press Enter to Restart", new Vector2(300, 270), Color.White);
+            }
+            
 
             enemy.Draw(spriteBatch);
             enemy2.Draw(spriteBatch);

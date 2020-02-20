@@ -14,9 +14,9 @@ namespace MonoGameWindowsStarter
     public class Grid
     {
         Game1 game;
-        int NUM_CELLS;
-        int CELL_SIZE_x ;
-        int CELL_SIZE_y ;
+        int NUM_CELLS = 4;
+        int CELL_SIZE_x = 250;
+        int CELL_SIZE_y = 250;
         public Grid(Game1 game)
         {
             this.game = game;
@@ -26,6 +26,7 @@ namespace MonoGameWindowsStarter
             {
                 for(int y = 0; y < NUM_CELLS; y++)
                 {
+
                 }
             }
 
