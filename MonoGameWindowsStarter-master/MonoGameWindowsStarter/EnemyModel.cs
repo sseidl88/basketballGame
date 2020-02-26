@@ -13,7 +13,7 @@ namespace MonoGameWindowsStarter
 {
     public class EnemyModel
     {
-        public int speed = 4;
+        public int speed = 2;
         public string color;
         public BoundingRectangle position;
         public bool isVisible = true;
@@ -34,9 +34,9 @@ namespace MonoGameWindowsStarter
                 speed *= -1;
             }
 
-            if (position.X > 620)
+            if (position.X > 580)
             {
-                position.X = 620;
+                position.X = 580;
                 speed *= -1;
             }
 

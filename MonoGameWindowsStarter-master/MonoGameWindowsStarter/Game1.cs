@@ -16,6 +16,7 @@ namespace MonoGameWindowsStarter
         public Hoop hoop2;
         public Hoop hoop3;
         public int score = 0;
+        public Texture2D background;
         
 
         public Game1()
@@ -53,6 +54,7 @@ namespace MonoGameWindowsStarter
             hoop1.LoadContent(Content);
             hoop2.LoadContent(Content);
             hoop3.LoadContent(Content);
+            background = Content.Load<Texture2D>("floor");
             // TODO: use this.Content to load your game content here
         }
 
@@ -97,6 +99,7 @@ namespace MonoGameWindowsStarter
             var t = Matrix.CreateTranslation(offset.X, offset.Y, 0);
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, t);
 
+            spriteBatch.Draw(background, new Vector2(0,-400));
             player.Draw(spriteBatch);
             hoop1.Draw(spriteBatch);
             hoop2.Draw(spriteBatch);

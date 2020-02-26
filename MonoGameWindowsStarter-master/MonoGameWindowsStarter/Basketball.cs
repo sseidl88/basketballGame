@@ -32,7 +32,7 @@ namespace MonoGameWindowsStarter
 
         public void Update(GameTime gameTime)
         {
-            if(position.Y < 0)
+            if(position.Y < -550)
             {
                 isVisible = false;
             }

@@ -14,8 +14,8 @@ namespace MonoGameWindowsStarter
         ContentManager content;
         public EnemyType1(int x, int y)
         {
-            position.Width = 20;
-            position.Height = 20;
+            position.Width = 5;
+            position.Height = 5;
             position.X = x;
             position.Y = y;
         }

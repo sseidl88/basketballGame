@@ -11,11 +11,27 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace MonoGameWindowsStarter
 {
+    enum GameStatus
+    {
+        playing,
+        gameOver
+    }
+    enum PlayerAnimation
+    {
+        Shooting = 1,
+        Idle = 2,
+        dribbleUp = 3,
+        dribbleDown = 4,
+    }
     public class Player
     {
         Game1 game;
         ContentManager content;
         public BoundingRectangle bounds;
+        public Rectangle RectBounds
+        {
+            get { return bounds; }
+        }
         Texture2D texture;
         public int speed;
         GraphicsDevice graphics;
@@ -28,14 +44,29 @@ namespace MonoGameWindowsStarter
         Hoop hoop3;
         int score = 0;
         SpriteFont font;
-        Vector2 scoreboardPosition = new Vector2( 500, 20);
-        Vector2 timerPosition = new Vector2(200, 20);
+        Vector2 scoreboardPosition = new Vector2( 500, 150);
+        Vector2 timerPosition = new Vector2(200, 150);
         Random random;
         int ballChoice;
         float timer = 60;
         bool playing = true;
         EnemyType1 enemy;
         EnemyType1 enemy2;
+        EnemyType1 enemy3;
+        EnemyType1 enemy4;
+        EnemyType1 enemy5;
+
+        const int ANIMATION_FRAME_RATE = 124;
+
+
+        const int FRAME_WIDTH = 64;
+
+        const int FRAME_HEIGHT = 64;
+
+       // const float PLAYER_SPEED = 150;
+
+
+        GameStatus GameStatus = GameStatus.playing;
 
         public Player(Game1 game)
         {
@@ -45,6 +76,12 @@ namespace MonoGameWindowsStarter
             hoop3 = new Hoop(600, -550);
             enemy = new EnemyType1(90, 200);
             enemy2 = new EnemyType1(550, 300);
+            enemy3 = new EnemyType1(250, 0);
+            enemy4 = new EnemyType1(350, -200);
+            enemy5 = new EnemyType1(450, -350);
+            //recBounds = bounds;
+            bounds.X = 300;
+
 
         }
 
@@ -52,7 +89,7 @@ namespace MonoGameWindowsStarter
         {
             this.content = content;
             texture = content.Load<Texture2D>("bbal_player");
-            speed = 4;
+            speed = 2;
             random = new Random();
             font = content.Load<SpriteFont>("font");
 
@@ -63,6 +100,9 @@ namespace MonoGameWindowsStarter
             bounds.Y = 400;
             enemy.LoadContent(content);
             enemy2.LoadContent(content);
+            enemy3.LoadContent(content);
+            enemy4.LoadContent(content);
+            enemy5.LoadContent(content);
 
         }
 
@@ -73,10 +113,18 @@ namespace MonoGameWindowsStarter
             ballChoice = random.Next(1, 10);
             enemy.Update();
             enemy2.Update();
+            enemy3.Update();
+            enemy4.Update();
+            enemy5.Update();
             if (!playing)
             {
+                GameStatus = GameStatus.gameOver;
                 enemy.isMoving = false;
                 enemy2.isMoving = false;
+                enemy3.isMoving = false;
+                enemy4.isMoving = false;
+                enemy5.isMoving = false;
+
             }
 
 
@@ -90,23 +138,31 @@ namespace MonoGameWindowsStarter
             if(keyboardState.IsKeyDown(Keys.Enter) && !playing)
             {
                 playing = true;
+                GameStatus = GameStatus.playing;
                 timer = 60;
                 score = 0;
+                bounds.X = 300;
+                bounds.Y = 450;
+                enemy.isMoving = true;
+                enemy2.isMoving = true;
+                enemy3.isMoving = true;
+                enemy4.isMoving = true;
+                enemy5.isMoving = true;
             }
 
             if (keyboardState.IsKeyDown(Keys.Right) && playing)
             {
-                if(bounds.X > 660)
+                if(bounds.X > 580)
                 {
-                    bounds.X = 660;
+                    bounds.X = 580;
                 }
                 bounds.X += speed;
             }
             if (keyboardState.IsKeyDown(Keys.Left) && playing)
             {
-                if(bounds.X < 0)
+                if(bounds.X < 60)
                 {
-                    bounds.X = 0;
+                    bounds.X = 60;
                 }
                 bounds.X -= speed;
             }
@@ -117,8 +173,10 @@ namespace MonoGameWindowsStarter
                 {
                     bounds.Y = -450;
                 }
+                //keep the score and time in the play's field of view
                 scoreboardPosition.Y -= speed;
                 timerPosition.Y -= speed;
+
                 bounds.Y -= speed;
             }
             if (keyboardState.IsKeyDown(Keys.Down) && playing)
@@ -127,8 +185,24 @@ namespace MonoGameWindowsStarter
                 {
                     bounds.Y = 400;
                 }   
+                //keep the score and time in the play's field of view
+                scoreboardPosition.Y += speed;
+                timerPosition.Y += speed;
+
                 bounds.Y += speed;
             }
+            if(scoreboardPosition.Y < -550 || timerPosition.Y < -550)
+            {
+                scoreboardPosition.Y = -550;
+                timerPosition.Y = -550;
+            }
+            if (scoreboardPosition.Y > 150 || timerPosition.Y > 150)
+            {
+                scoreboardPosition.Y = 150;
+                timerPosition.Y = 150;
+            }
+
+
             //shoot
             if (keyboardState.IsKeyDown(Keys.Space) && !oldKeyboardState.IsKeyDown(Keys.Space) && playing)
             {
@@ -197,6 +271,12 @@ namespace MonoGameWindowsStarter
 
             }
 
+            //check collision of enemies and player
+            if (RectBounds.Intersects(enemy.RectBounds) || RectBounds.Intersects(enemy2.RectBounds)|| RectBounds.Intersects(enemy3.RectBounds) || RectBounds.Intersects(enemy4.RectBounds) || RectBounds.Intersects(enemy5.RectBounds))
+            {
+                playing = false;
+            }
+
 
         }
 
@@ -207,13 +287,16 @@ namespace MonoGameWindowsStarter
             spriteBatch.DrawString(font, "Time Left: " + timer.ToString("0.0"), timerPosition, Color.White);
             if (!playing)
             {
-                spriteBatch.DrawString(font, "GAME OVER", new Vector2(300, 200), Color.White);
-                spriteBatch.DrawString(font, "Press Enter to Restart", new Vector2(300, 270), Color.White);
+                spriteBatch.DrawString(font, "GAME OVER", new Vector2(300, bounds.Y - 150), Color.White);
+                spriteBatch.DrawString(font, "Press Enter to Restart", new Vector2(300, bounds.Y - 50), Color.White);
             }
             
 
             enemy.Draw(spriteBatch);
             enemy2.Draw(spriteBatch);
+            enemy3.Draw(spriteBatch);
+            enemy4.Draw(spriteBatch);
+            enemy5.Draw(spriteBatch);
 
             foreach (Basketball bb in shots)
             {
