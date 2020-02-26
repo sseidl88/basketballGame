@@ -16,11 +16,18 @@ namespace MonoGameWindowsStarter
         playing,
         gameOver
     }
+    //enum PlayerAnimation
+    //{
+    //    Shooting = 1,
+    //    Idle = 2,
+    //    dribbleUp = 3,
+    //    dribbleDown = 4,
+    //}
     enum PlayerAnimation
     {
-        Shooting = 1,
+        Shooting = 3,
         Idle = 2,
-        dribbleUp = 3,
+        dribbleUp = 1,
         dribbleDown = 4,
     }
     public class Player
@@ -57,8 +64,10 @@ namespace MonoGameWindowsStarter
         EnemyType1 enemy5;
 
         const int ANIMATION_FRAME_RATE = 124;
+        TimeSpan timerRate;
+        PlayerAnimation animateState;
 
-
+        int frame;
         const int FRAME_WIDTH = 64;
 
         const int FRAME_HEIGHT = 64;
@@ -71,6 +80,7 @@ namespace MonoGameWindowsStarter
         public Player(Game1 game)
         {
             this.game = game;
+            timerRate = new TimeSpan(0);
             hoop1 = new Hoop(100, -550);
             hoop2 = new Hoop(350, -520);
             hoop3 = new Hoop(600, -550);
@@ -81,6 +91,8 @@ namespace MonoGameWindowsStarter
             enemy5 = new EnemyType1(450, -350);
             //recBounds = bounds;
             bounds.X = 300;
+            bounds.Height = 10;
+            bounds.Width = 10;
 
 
         }
@@ -88,14 +100,13 @@ namespace MonoGameWindowsStarter
         public void LoadContent(ContentManager content)
         {
             this.content = content;
-            texture = content.Load<Texture2D>("bbal_player");
+            texture = content.Load<Texture2D>("ballSheet");
             speed = 2;
             random = new Random();
             font = content.Load<SpriteFont>("font");
 
             //set bounds size and placement
-            bounds.Width = 80;
-            bounds.Height = 100;
+           
             bounds.X = 400;
             bounds.Y = 400;
             enemy.LoadContent(content);
@@ -152,24 +163,28 @@ namespace MonoGameWindowsStarter
 
             if (keyboardState.IsKeyDown(Keys.Right) && playing)
             {
+                animateState = PlayerAnimation.dribbleUp;
                 if(bounds.X > 580)
                 {
                     bounds.X = 580;
                 }
                 bounds.X += speed;
+                animateState = PlayerAnimation.dribbleDown;
             }
-            if (keyboardState.IsKeyDown(Keys.Left) && playing)
+            else if (keyboardState.IsKeyDown(Keys.Left) && playing)
             {
-                if(bounds.X < 60)
+                animateState = PlayerAnimation.dribbleUp;
+                if (bounds.X < 60)
                 {
                     bounds.X = 60;
                 }
                 bounds.X -= speed;
+                animateState = PlayerAnimation.dribbleDown;
             }
-            //adding the ability to move up and down the screen
-            if (keyboardState.IsKeyDown(Keys.Up) && playing)
+            else if (keyboardState.IsKeyDown(Keys.Up) && playing)
             {
-                if(bounds.Y < -450)
+                animateState = PlayerAnimation.dribbleUp;
+                if (bounds.Y < -450)
                 {
                     bounds.Y = -450;
                 }
@@ -178,10 +193,12 @@ namespace MonoGameWindowsStarter
                 timerPosition.Y -= speed;
 
                 bounds.Y -= speed;
+                animateState = PlayerAnimation.dribbleDown;
             }
-            if (keyboardState.IsKeyDown(Keys.Down) && playing)
+            else if (keyboardState.IsKeyDown(Keys.Down) && playing)
             {
-                if(bounds.Y > 400)
+                animateState = PlayerAnimation.dribbleUp;
+                if (bounds.Y > 400)
                 {
                     bounds.Y = 400;
                 }   
@@ -190,7 +207,13 @@ namespace MonoGameWindowsStarter
                 timerPosition.Y += speed;
 
                 bounds.Y += speed;
+                animateState = PlayerAnimation.dribbleDown;
+            }else
+            {
+                animateState = PlayerAnimation.Idle;
             }
+
+
             if(scoreboardPosition.Y < -550 || timerPosition.Y < -550)
             {
                 scoreboardPosition.Y = -550;
@@ -206,6 +229,7 @@ namespace MonoGameWindowsStarter
             //shoot
             if (keyboardState.IsKeyDown(Keys.Space) && !oldKeyboardState.IsKeyDown(Keys.Space) && playing)
             {
+                animateState = PlayerAnimation.Shooting;
                 if(ballChoice >= 9)
                 {
                     money.Add(new Moneyball(this));
@@ -277,12 +301,35 @@ namespace MonoGameWindowsStarter
                 playing = false;
             }
 
+            //animation
+            if (animateState != PlayerAnimation.Idle) timerRate += gametime.ElapsedGameTime;
+
+
+            while (timerRate.TotalMilliseconds > ANIMATION_FRAME_RATE)
+            {
+
+                frame++;
+
+                timerRate -= new TimeSpan(0, 0, 0, 0, ANIMATION_FRAME_RATE);
+            }
+
+            frame %= 1;
+
+
+
 
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Vector2(bounds.X, bounds.Y));
+            var source = new Rectangle(
+            frame * FRAME_WIDTH, // X value 
+            (int)animateState % 4 * FRAME_HEIGHT, // Y value
+            FRAME_WIDTH, // Width 
+            FRAME_HEIGHT // Height
+            );
+
+            spriteBatch.Draw(texture, new Vector2(bounds.X, bounds.Y), source, Color.White);
             spriteBatch.DrawString(font, "Score: " + score.ToString(), scoreboardPosition, Color.White);
             spriteBatch.DrawString(font, "Time Left: " + timer.ToString("0.0"), timerPosition, Color.White);
             if (!playing)
