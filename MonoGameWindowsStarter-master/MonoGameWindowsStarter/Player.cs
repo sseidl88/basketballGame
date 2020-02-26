@@ -29,6 +29,7 @@ namespace MonoGameWindowsStarter
         int score = 0;
         SpriteFont font;
         Vector2 scoreboardPosition = new Vector2( 500, 20);
+        Vector2 timerPosition = new Vector2(200, 20);
         Random random;
         int ballChoice;
         float timer = 60;
@@ -39,9 +40,9 @@ namespace MonoGameWindowsStarter
         public Player(Game1 game)
         {
             this.game = game;
-            hoop1 = new Hoop(100, 70);
-            hoop2 = new Hoop(350, 40);
-            hoop3 = new Hoop(600, 70);
+            hoop1 = new Hoop(100, -550);
+            hoop2 = new Hoop(350, -520);
+            hoop3 = new Hoop(600, -550);
             enemy = new EnemyType1(90, 200);
             enemy2 = new EnemyType1(550, 300);
 
@@ -95,9 +96,9 @@ namespace MonoGameWindowsStarter
 
             if (keyboardState.IsKeyDown(Keys.Right) && playing)
             {
-                if(bounds.X > game.GraphicsDevice.Viewport.Width - 60)
+                if(bounds.X > 660)
                 {
-                    bounds.X = game.GraphicsDevice.Viewport.Width - 60;
+                    bounds.X = 660;
                 }
                 bounds.X += speed;
             }
@@ -109,6 +110,26 @@ namespace MonoGameWindowsStarter
                 }
                 bounds.X -= speed;
             }
+            //adding the ability to move up and down the screen
+            if (keyboardState.IsKeyDown(Keys.Up) && playing)
+            {
+                if(bounds.Y < -450)
+                {
+                    bounds.Y = -450;
+                }
+                scoreboardPosition.Y -= speed;
+                timerPosition.Y -= speed;
+                bounds.Y -= speed;
+            }
+            if (keyboardState.IsKeyDown(Keys.Down) && playing)
+            {
+                if(bounds.Y > 400)
+                {
+                    bounds.Y = 400;
+                }   
+                bounds.Y += speed;
+            }
+            //shoot
             if (keyboardState.IsKeyDown(Keys.Space) && !oldKeyboardState.IsKeyDown(Keys.Space) && playing)
             {
                 if(ballChoice >= 9)
@@ -183,7 +204,7 @@ namespace MonoGameWindowsStarter
         {
             spriteBatch.Draw(texture, new Vector2(bounds.X, bounds.Y));
             spriteBatch.DrawString(font, "Score: " + score.ToString(), scoreboardPosition, Color.White);
-            spriteBatch.DrawString(font, "Time Left: " + timer.ToString("0.0"), new Vector2(200, 20), Color.White);
+            spriteBatch.DrawString(font, "Time Left: " + timer.ToString("0.0"), timerPosition, Color.White);
             if (!playing)
             {
                 spriteBatch.DrawString(font, "GAME OVER", new Vector2(300, 200), Color.White);

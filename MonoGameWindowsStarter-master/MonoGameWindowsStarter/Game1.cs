@@ -23,9 +23,9 @@ namespace MonoGameWindowsStarter
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
              player = new Player(this);
-            hoop1 = new Hoop(100, 70);
-            hoop2 = new Hoop(350, 40);
-            hoop3 = new Hoop(600, 70);
+            hoop1 = new Hoop(100, -520);
+            hoop2 = new Hoop(350, -550);
+            hoop3 = new Hoop(600, -520);
         }
 
         /// <summary>
@@ -91,7 +91,11 @@ namespace MonoGameWindowsStarter
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
+            //spriteBatch.Begin();
+            //var offset = new Vector2(200, 300) - player.Position;
+            var offset = new Vector2(200, 300) - new Vector2(player.bounds.X, player.bounds.Y);
+            var t = Matrix.CreateTranslation(offset.X, offset.Y, 0);
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, t);
 
             player.Draw(spriteBatch);
             hoop1.Draw(spriteBatch);
