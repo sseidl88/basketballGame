@@ -55,7 +55,7 @@ namespace MonoGameWindowsStarter
         Vector2 timerPosition = new Vector2(200, 150);
         Random random;
         int ballChoice;
-        float timer = 60;
+        float timer = 30;
         bool playing = true;
         EnemyType1 enemy;
         EnemyType1 enemy2;
@@ -91,8 +91,8 @@ namespace MonoGameWindowsStarter
             enemy5 = new EnemyType1(450, -350);
             //recBounds = bounds;
             bounds.X = 300;
-            bounds.Height = 10;
-            bounds.Width = 10;
+            bounds.Height = 20;
+            bounds.Width = 20;
 
 
         }
@@ -150,7 +150,7 @@ namespace MonoGameWindowsStarter
             {
                 playing = true;
                 GameStatus = GameStatus.playing;
-                timer = 60;
+                timer = 30;
                 score = 0;
                 bounds.X = 300;
                 bounds.Y = 450;
