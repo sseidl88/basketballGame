@@ -40,6 +40,9 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>MonoGameWindowsStarter.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Ball_model.cs" />
     <Compile Include="Basketball.cs" />

@@ -184,9 +184,9 @@ namespace MonoGameWindowsStarter
             else if (keyboardState.IsKeyDown(Keys.Up) && playing)
             {
                 animateState = PlayerAnimation.dribbleUp;
-                if (bounds.Y < -450)
+                if (bounds.Y < -290)
                 {
-                    bounds.Y = -450;
+                    bounds.Y = -290;
                 }
                 //keep the score and time in the play's field of view
                 scoreboardPosition.Y -= speed;

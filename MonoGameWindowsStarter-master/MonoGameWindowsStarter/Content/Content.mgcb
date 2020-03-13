@@ -109,6 +109,12 @@
 /processorParam:TextureFormat=Color
 /build:bball_enemy.png
 
+#begin comeOn.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:comeOn.mp3
+
 #begin enemy_placeholder.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace MonoGameWindowsStarter
 {
@@ -17,8 +18,7 @@ namespace MonoGameWindowsStarter
         public Hoop hoop3;
         public int score = 0;
         public Texture2D background;
-        
-
+        Song spaceJam;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -55,6 +55,9 @@ namespace MonoGameWindowsStarter
             hoop2.LoadContent(Content);
             hoop3.LoadContent(Content);
             background = Content.Load<Texture2D>("floor");
+            spaceJam = Content.Load<Song>("comeOn");
+
+            MediaPlayer.Play(spaceJam);
             // TODO: use this.Content to load your game content here
         }
 
@@ -80,6 +83,7 @@ namespace MonoGameWindowsStarter
             // TODO: Add your update logic here
 
             player.Update(gameTime);
+           
 
             base.Update(gameTime);
         }
