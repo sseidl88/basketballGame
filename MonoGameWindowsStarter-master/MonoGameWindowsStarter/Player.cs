@@ -159,6 +159,8 @@ namespace MonoGameWindowsStarter
                 enemy3.isMoving = true;
                 enemy4.isMoving = true;
                 enemy5.isMoving = true;
+                scoreboardPosition.Y = 150;
+                timerPosition.Y = 150;
             }
 
             if (keyboardState.IsKeyDown(Keys.Right) && playing)
